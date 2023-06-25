@@ -1,0 +1,26 @@
+# CustomDecentHolograms v1.0 configuration file
+# Report bugs and issues to @powerdev on Discord
+#
+# api: GriefPrevention, PlotSquared, Towny, BentoBox, SuperiorSkyblock, Iridium
+# filter: Prevent players from using blacklisted words
+# max-lines: Limit the maximum lines a hologram can have
+# max-characters: Limit the maximum characters on each line
+# spawn-lines: Set the display for new holograms
+# spawn-location: Set the location for new holograms
+
+hologram:
+  api: ''
+  max-lines: 6
+  max-characters: 40
+  spawn-lines:
+    - '&u&l%player_name% Hologram'
+    - '&fEdit lines &7» &a/hg edit <hologram> <line>'
+    - '&fAdd lines &7» &a/hg add <hologram> <text>'
+    - '&fRemove lines &7» &a/hg remove <hologram> <line>'
+    - '&fList all of your owned holograms &7» &a/hg list'
+    - '&fUse colors and floating items &7» &a/hg formats'
+  spawn-location:
+    world: world
+    x: 0
+    y: 0
+    z: 0

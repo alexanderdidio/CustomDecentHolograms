@@ -1,0 +1,42 @@
+name: CustomDecentHolograms
+version: '${project.version}'
+main: com.alexanderdidio.customdecentholograms.CustomDecentHolograms
+api-version: 1.13
+prefix: CustomDecentHolograms
+depend: [DecentHolograms]
+authors: [powerdev]
+description: Automates the creation and customization of player holograms.
+website: vanted.net
+commands:
+  hg:
+    description: Main command
+    usage: /hg <subcommand>
+    subcommands:
+      create:
+        permission: cdh.create
+        description: Create a player hologram
+        usage: /hg create <hologram>
+      move:
+        permission: cdh.move
+        description: Move a hologram
+        usage: /hg move <hologram>
+      edit:
+        permission: cdh.edit
+        description: Edit a hologram line
+        usage: /hg edit <hologram> <line> <text>
+      add:
+        permission: cdh.add
+        description: Add a hologram line
+        usage: /hg add <hologram> <text>
+      remove:
+        permission: cdh.remove
+        description: Remove a hologram line
+        usage: /hg remove <hologram> <line>
+      list:
+        permission: cdh.list
+        description: List owned holograms
+        usage: /hg list
+      formats:
+        permission: cdh.formats
+        description: List formatting options
+        usage: /hg formats
