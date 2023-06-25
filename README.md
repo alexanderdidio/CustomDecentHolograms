@@ -9,6 +9,7 @@ Automates the process of player created and maintained holograms. Offers players
 - Required dependency [DecentHolograms](https://www.spigotmc.org/resources/decentholograms-1-8-1-20-1-papi-support-no-dependencies.96927/)
 - Reward players with their own holograms
 - Easy for players to manage and customize
+- Supports popular plugins and more by request
 
 **Supported Plugins**
 - GriefPrevention
