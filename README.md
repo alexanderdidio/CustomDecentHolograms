@@ -1,6 +1,10 @@
 # CustomDecentHolograms
 Automates the process of player created and maintained holograms. Offers players the ability to manage, personalize, and relocate their holograms according to their specific requirements within predefined boundaries.
 
+**Requirements**
+- Install [DecentHolograms](https://www.spigotmc.org/resources/decentholograms-1-8-1-20-1-papi-support-no-dependencies.96927/)
+- Configure the API in the `config.yml` to a supported plugin
+
 **Features**
 - Required dependency [DecentHolograms](https://www.spigotmc.org/resources/decentholograms-1-8-1-20-1-papi-support-no-dependencies.96927/)
 - Reward players with their own holograms
