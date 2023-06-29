@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class Database {
-    private static final Map<UUID, List<Hologram>> database = new HashMap<>();
-    private static final File dataFile = new File("plugins/CustomDecentHolograms/data.yml");
-    private static YamlConfiguration dataConfig;
+    private final Map<UUID, List<Hologram>> database = new HashMap<>();
+    private final File dataFile = new File("plugins/CustomDecentHolograms/data.yml");
+    private YamlConfiguration dataConfig;
     private final CustomDecentHolograms plugin;
 
     public Database(CustomDecentHolograms plugin) {

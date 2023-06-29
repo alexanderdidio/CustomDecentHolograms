@@ -13,11 +13,11 @@ public class CustomDecentHolograms extends JavaPlugin {
     private Database database;
     private Message message;
     private API api;
-    private static String apiConfig;
-    private static int maxLines;
-    private static int maxChars;
-    private static Location spawnLocation;
-    private static List<String> spawnLines = new ArrayList<>();
+    private String apiConfig;
+    private int maxLines;
+    private int maxChars;
+    private Location spawnLocation;
+    private List<String> spawnLines = new ArrayList<>();
 
     @Override
     public void onEnable() {
