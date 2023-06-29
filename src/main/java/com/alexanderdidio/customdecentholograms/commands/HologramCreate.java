@@ -14,12 +14,22 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class HologramCreate implements CommandExecutor {
+    private final CustomDecentHolograms plugin;
+
+    public HologramCreate(CustomDecentHolograms plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Database database = plugin.getDatabase();
+        Message message = plugin.getMessage();
+        List<String> lines = plugin.getLines();
         boolean permission = sender.hasPermission("cdh.create");
         boolean console = sender instanceof ConsoleCommandSender;
         Player player = Bukkit.getPlayer(args[1]);
@@ -28,16 +38,16 @@ public class HologramCreate implements CommandExecutor {
         String hologramName;
 
         if (!(permission || console)) {
-            Message.send(sender, "noPermission");
+            message.send(sender, "noPermission");
             return true;
         }
 
         if (player == null) {
-            Message.send(sender, "invalidPlayer");
+            message.send(sender, "invalidPlayer");
             return true;
         } else {
             uuid = player.getUniqueId();
-            hologramAmount = Database.countHolograms(uuid);
+            hologramAmount = database.countHolograms(uuid);
         }
 
         if (hologramAmount > 0) {
@@ -46,15 +56,18 @@ public class HologramCreate implements CommandExecutor {
             hologramName = "uuid_" + uuid + "_" + 1;
         }
 
-        Hologram hologram = DHAPI.createHologram(hologramName, CustomDecentHolograms.spawnLocation, true, CustomDecentHolograms.spawnLines);
+        lines.replaceAll(s -> s.replaceAll(Pattern.quote("{0}"), player.getName()));
+        Hologram hologram = DHAPI.createHologram(hologramName, plugin.getLocation(), true, lines);
         DecentHologramsAPI.get().getHologramManager().registerHologram(hologram);
+
         try {
-            Database.createHologram(uuid, hologram);
+            database.createHologram(uuid, hologram);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Message.send(sender, "hologramCreate", args[1]);
-        Message.send(player, "hologramReceive");
+
+        message.send(sender, "hologramCreate", args[1]);
+        message.send(player, "hologramReceive");
         return true;
     }
 }
