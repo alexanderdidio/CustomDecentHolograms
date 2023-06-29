@@ -39,6 +39,7 @@ public class CustomDecentHolograms extends JavaPlugin {
         Command command = new Command(this);
         PluginCommand pluginCommand = getCommand("hg");
         pluginCommand.setExecutor(command);
+        new Metrics(this, 18931);
     }
 
     public Database getDatabase() {
