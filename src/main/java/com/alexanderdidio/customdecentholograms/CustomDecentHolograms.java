@@ -10,23 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomDecentHolograms extends JavaPlugin {
-    public static String api;
-    public static int maxLines;
-    public static int maxChars;
-    public static Location spawnLocation;
-    public static List<String> spawnLines = new ArrayList<>();
+    private Database database;
+    private Message message;
+    private API api;
+    private static String apiConfig;
+    private static int maxLines;
+    private static int maxChars;
+    private static Location spawnLocation;
+    private static List<String> spawnLines = new ArrayList<>();
 
     @Override
     public void onEnable() {
-        loadConfigs();
-        PluginCommand command = getCommand("hg");
-        command.setExecutor(new Command());
-        command.setTabCompleter(new Command());
-    }
-
-    private void loadConfigs() {
+        database = new Database(this);
+        message = new Message(this);
+        api = new API(this);
         saveDefaultConfig();
-        api = getConfig().getString("hologram.api");
+        database.loadDatabase();
+        message.loadMessages();
+        apiConfig = getConfig().getString("hologram.api");
         maxLines = getConfig().getInt("hologram.max-lines");
         maxChars = getConfig().getInt("hologram.max-characters");
         String world = getConfig().getString("hologram.spawn-location.world");
@@ -35,13 +36,40 @@ public class CustomDecentHolograms extends JavaPlugin {
         double z = getConfig().getDouble("hologram.spawn-location.Z");
         spawnLines = getConfig().getStringList("hologram.spawn-lines");
         spawnLocation = new Location(Bukkit.getWorld(world), x, y, z);
-        if (!Message.messageFile.exists()) {
-            saveResource("messages.yml", false);
-        }
-        if (!Database.dataFile.exists()) {
-            saveResource("data.yml", false);
-        }
-        Database.loadDatabase();
-        Message.loadMessages();
+        Command command = new Command(this);
+        PluginCommand pluginCommand = getCommand("hg");
+        pluginCommand.setExecutor(command);
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public API getAPI() {
+        return api;
+    }
+
+    public String getAPIConfig() {
+        return apiConfig;
+    }
+
+    public int getMaxLines() {
+        return maxLines;
+    }
+
+    public int getMaxChars() {
+        return maxChars;
+    }
+
+    public List<String> getLines() {
+        return spawnLines;
+    }
+
+    public Location getLocation() {
+        return spawnLocation;
     }
 }

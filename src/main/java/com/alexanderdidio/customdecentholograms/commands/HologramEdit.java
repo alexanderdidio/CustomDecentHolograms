@@ -15,8 +15,16 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class HologramEdit implements CommandExecutor {
+    private final CustomDecentHolograms plugin;
+
+    public HologramEdit(CustomDecentHolograms plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Database database = plugin.getDatabase();
+        Message message = plugin.getMessage();
         boolean permission = sender.hasPermission("cdh.edit");
         boolean console = sender instanceof ConsoleCommandSender;
         Player player = Bukkit.getPlayer(sender.getName());
@@ -33,60 +41,60 @@ public class HologramEdit implements CommandExecutor {
         String hologramText = String.valueOf(strings);
 
         if (!permission || console) {
-            Message.send(sender, "noPermission");
+            message.send(sender, "noPermission");
             return true;
         }
 
         if (player == null) {
-            Message.send(sender, "invalidSender");
+            message.send(sender, "invalidSender");
             return true;
         } else {
             uuid = player.getUniqueId();
-            hologramAmount = Database.countHolograms(uuid);
+            hologramAmount = database.countHolograms(uuid);
         }
 
         if (hologramAmount == 0) {
-            Message.send(sender, "invalidList");
+            message.send(sender, "invalidList");
             return true;
         }
 
         if (!hologramName.matches("\\d+")) {
-            Message.send(sender, "invalidHologram");
+            message.send(sender, "invalidHologram");
             return true;
         }
 
         if (!hologramLine.matches("\\d+")) {
-            Message.send(sender, "invalidLine");
+            message.send(sender, "invalidLine");
             return true;
         }
 
         if (hologramText.contains("%")) {
-            Message.send(sender, "invalidChars");
+            message.send(sender, "invalidChars");
             return true;
         }
 
-        if (hologramText.length() > CustomDecentHolograms.maxChars) {
-            Message.send(sender, "maximumChars", String.valueOf(CustomDecentHolograms.maxChars));
+        if (hologramText.length() > plugin.getMaxChars()) {
+            message.send(sender, "maximumChars", String.valueOf(plugin.getMaxChars()));
             return true;
         }
 
         int index = Integer.parseInt(hologramName)-1;
         int line = Integer.parseInt(hologramLine)-1;
 
-        if (!Database.validateHologram(uuid, index)) {
-            Message.send(sender, "invalidHologram");
+        if (!database.validateHologram(uuid, index)) {
+            message.send(sender, "invalidHologram");
             return true;
         }
 
-        Hologram hologram = Database.getHologram(uuid, index);
+        Hologram hologram = database.getHologram(uuid, index);
 
         if (line < 0 || line > hologram.getPage(0).size()-1) {
-            Message.send(sender, "invalidLine");
+            message.send(sender, "invalidLine");
             return true;
         }
 
         DHAPI.setHologramLine(hologram, line, hologramText);
-        Message.send(sender, "hologramEditLine", hologramName);
+        message.send(sender, "hologramEditLine", hologramName);
         return true;
     }
 }

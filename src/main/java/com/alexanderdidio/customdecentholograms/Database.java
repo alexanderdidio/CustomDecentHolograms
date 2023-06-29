@@ -10,10 +10,15 @@ import java.util.*;
 
 public class Database {
     private static final Map<UUID, List<Hologram>> database = new HashMap<>();
-    public static final File dataFile = new File("plugins/CustomDecentHolograms/data.yml");
+    private static final File dataFile = new File("plugins/CustomDecentHolograms/data.yml");
     private static YamlConfiguration dataConfig;
+    private final CustomDecentHolograms plugin;
 
-    public static void createHologram(UUID uuid, Hologram hologram) throws IOException {
+    public Database(CustomDecentHolograms plugin) {
+        this.plugin = plugin;
+    }
+
+    public void createHologram(UUID uuid, Hologram hologram) throws IOException {
         if (database.containsKey(uuid)) {
             List<String> hologramList = dataConfig.getStringList(uuid + ".holograms");
             hologramList.add(hologram.getName());
@@ -31,7 +36,7 @@ public class Database {
         }
     }
 
-    public static int countHolograms(UUID uuid) {
+    public int countHolograms(UUID uuid) {
         if (database.containsKey(uuid)) {
             return database.get(uuid).size();
         } else {
@@ -39,7 +44,7 @@ public class Database {
         }
     }
 
-    public static List<Hologram> listHolograms(UUID uuid) {
+    public List<Hologram> listHolograms(UUID uuid) {
         if (database.containsKey(uuid)) {
             return database.get(uuid);
         } else {
@@ -47,21 +52,26 @@ public class Database {
         }
     }
 
-    public static boolean validateHologram(UUID uuid, int index) {
+    public boolean validateHologram(UUID uuid, int index) {
         if (database.containsKey(uuid)) {
-            return database.get(uuid).get(index) != null;
+            return database.get(uuid).size() >= index + 1;
+        } else {
+            return false;
         }
-        return false;
     }
 
-    public static Hologram getHologram(UUID uuid, int index) {
+    public Hologram getHologram(UUID uuid, int index) {
         if (database.containsKey(uuid)) {
             return database.get(uuid).get(index);
+        } else {
+            return null;
         }
-        return null;
     }
 
-    public static void loadDatabase() {
+    public void loadDatabase() {
+        if (!dataFile.exists()) {
+            plugin.saveResource("data.yml", false);
+        }
         dataConfig = YamlConfiguration.loadConfiguration(dataFile);
         Set<String> uuids = dataConfig.getKeys(false);
         for (String uuid : uuids) {

@@ -24,10 +24,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class API {
+    private final CustomDecentHolograms plugin;
 
-    public static boolean checkLocation(Player player) {
-        switch (CustomDecentHolograms.api.toLowerCase()) {
+    public API(CustomDecentHolograms plugin) {
+        this.plugin = plugin;
+    }
+
+    public boolean checkLocation(Player player) {
+        switch (plugin.getAPIConfig().toLowerCase()) {
             case "griefprevention":
+                System.out.println("Debug 2");
                 return griefPrevention(player);
             case "plotsquared":
                 return plotSquared(player);
@@ -44,8 +50,8 @@ public class API {
         }
     }
 
-    public static boolean validateAPI() {
-        String apiConfig = CustomDecentHolograms.api;
+    public boolean validateAPI() {
+        String apiConfig = plugin.getAPIConfig();
         List<String> apis = new ArrayList<>();
         apis.add("griefprevention");
         apis.add("plotsquared");
@@ -55,18 +61,18 @@ public class API {
         apis.add("iridium");
         for (String api : apis) {
             if (api.equalsIgnoreCase(apiConfig)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    private static boolean griefPrevention(Player player) {
+    private boolean griefPrevention(Player player) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, false, null);
         return claim != null && claim.hasExplicitPermission(player, ClaimPermission.Build);
     }
 
-    private static boolean plotSquared(Player player) {
+    private boolean plotSquared(Player player) {
         Location location = player.getLocation();
         String world = location.getWorld().getName();
         int x = location.getBlockX();
@@ -76,25 +82,25 @@ public class API {
         return plot != null && plot.getTrusted().contains(player.getUniqueId());
     }
 
-    private static boolean towny(Player player) {
+    private boolean towny(Player player) {
         Location location = player.getLocation();
         return PlayerCacheUtil.getCachePermission(player, location, Material.ARMOR_STAND, TownyPermission.ActionType.BUILD);
     }
 
-    private static boolean bentoBox(Player player) {
+    private boolean bentoBox(Player player) {
         IslandsManager manager = BentoBox.getInstance().getIslandsManager();
         Optional<world.bentobox.bentobox.database.objects.Island> island = manager.getIslandAt(player.getLocation());
         return island.isPresent() && island.get().isAllowed(User.getInstance(player), Flags.PLACE_BLOCKS);
     }
 
-    private static boolean superiorSkyblock(Player player) {
+    private boolean superiorSkyblock(Player player) {
         Location location = player.getLocation();
         SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
         com.bgsoftware.superiorskyblock.api.island.Island island = SuperiorSkyblockAPI.getIslandAt(location);
         return island != null && (island.isMember(superiorPlayer) || island.isCoop(superiorPlayer));
     }
 
-    private static boolean iridium(Player player) {
+    private boolean iridium(Player player) {
         Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
         com.iridium.iridiumskyblock.database.User user = IridiumSkyblockAPI.getInstance().getUser(player);
         return island.isPresent() && IridiumSkyblockAPI.getInstance().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK);
