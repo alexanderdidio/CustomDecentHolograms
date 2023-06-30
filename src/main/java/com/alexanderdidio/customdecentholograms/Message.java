@@ -9,8 +9,8 @@ import java.io.File;
 
 public class Message {
     private final CustomDecentHolograms plugin;
-    private static final File messageFile = new File("plugins/CustomDecentHolograms/messages.yml");
-    private static YamlConfiguration messageConfig;
+    private final File messageFile = new File("plugins/CustomDecentHolograms/messages.yml");
+    private YamlConfiguration messageConfig;
 
     public Message (CustomDecentHolograms plugin) {
         this.plugin = plugin;
