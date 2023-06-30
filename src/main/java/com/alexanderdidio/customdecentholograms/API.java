@@ -33,7 +33,6 @@ public class API {
     public boolean checkLocation(Player player) {
         switch (plugin.getAPIConfig().toLowerCase()) {
             case "griefprevention":
-                System.out.println("Debug 2");
                 return griefPrevention(player);
             case "plotsquared":
                 return plotSquared(player);
