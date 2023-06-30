@@ -1,5 +1,5 @@
 # CustomDecentHolograms
-CustomDecentHolograms allows server owners the ability to reward players with self-managed holograms. Players can customize and relocate owned holograms within predefined boundaries set by the config.yml.
+CustomDecentHolograms allows server owners the ability to reward players with self-managed holograms. Players can customize and relocate owned holograms within predefined boundaries set by the config.yml. Please rate the plugin 5 stars on [SpigotMC](https://www.spigotmc.org/resources/customdecentholograms.110861/) if you enjoy using it!
 
 **Features**
 - Lightweight plugin using DecentHolograms API
@@ -7,10 +7,6 @@ CustomDecentHolograms allows server owners the ability to reward players with se
 - Easy to use commands and fast setup
 - Fully customizable config and message files
 - Supports [GriefPrevention](https://github.com/TechFortress/GriefPrevention/), [PlotSquared](https://www.spigotmc.org/resources/plotsquared-v6.77506/), [Towny](https://github.com/TownyAdvanced/Towny), [BentoBox](https://github.com/BentoBoxWorld/BentoBox/), [SuperiorSkyblock2](https://github.com/BG-Software-LLC/SuperiorSkyblock2), [Iridium](https://github.com/Iridium-Development/IridiumSkyblock)
-
-Need help or have issues? Join [vanted.net/discord](https://vanted.net/discord) for support!
-
-Please rate the plugin 5 stars on [SpigotMC](https://www.spigotmc.org/resources/customdecentholograms.110861/) if you enjoy using it!
 
 ## Installation
 Download the JAR file from [latest release](https://github.com/alexanderdidio/CustomDecentHolograms/releases/latest) and copy it to the "plugins" directory for your Minecraft server.
