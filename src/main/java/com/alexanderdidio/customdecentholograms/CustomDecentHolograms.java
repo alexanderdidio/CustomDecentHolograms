@@ -14,6 +14,7 @@ public class CustomDecentHolograms extends JavaPlugin {
     private Message message;
     private API api;
     private String apiConfig;
+    private String regionConfig;
     private int maxLines;
     private int maxChars;
     private Location spawnLocation;
@@ -28,6 +29,7 @@ public class CustomDecentHolograms extends JavaPlugin {
         database.loadDatabase();
         message.loadMessages();
         apiConfig = getConfig().getString("hologram.api");
+        regionConfig = getConfig().getString("hologram.region");
         maxLines = getConfig().getInt("hologram.max-lines");
         maxChars = getConfig().getInt("hologram.max-characters");
         String world = getConfig().getString("hologram.spawn-location.world");
@@ -56,6 +58,10 @@ public class CustomDecentHolograms extends JavaPlugin {
 
     public String getAPIConfig() {
         return apiConfig;
+    }
+
+    public String getRegionConfig() {
+        return regionConfig;
     }
 
     public int getMaxLines() {
