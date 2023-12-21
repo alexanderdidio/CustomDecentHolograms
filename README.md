@@ -4,9 +4,10 @@ CustomDecentHolograms allows server owners the ability to reward players with se
 **Features**
 - Lightweight plugin using DecentHolograms API
 - Reward players with customizable holograms
+- Permissions to limit hologram amounts
 - Easy to use commands and fast setup
 - Fully customizable config and message files
-- Supports [GriefPrevention](https://github.com/TechFortress/GriefPrevention/), [PlotSquared](https://www.spigotmc.org/resources/plotsquared-v6.77506/), [Towny](https://github.com/TownyAdvanced/Towny), [BentoBox](https://github.com/BentoBoxWorld/BentoBox/), [SuperiorSkyblock2](https://github.com/BG-Software-LLC/SuperiorSkyblock2), [Iridium](https://github.com/Iridium-Development/IridiumSkyblock)
+- Supports [GriefPrevention](https://github.com/TechFortress/GriefPrevention/), [GriefDefender](https://www.spigotmc.org/resources/1-12-2-1-20-4-griefdefender-claim-plugin-grief-prevention-protection.68900/), [PlotSquared](https://www.spigotmc.org/resources/plotsquared-v6.77506/), [WorldGuard](https://dev.bukkit.org/projects/worldguard), [Towny](https://github.com/TownyAdvanced/Towny), [Lands](https://www.spigotmc.org/resources/lands-%E2%AD%95-land-claim-plugin-%E2%9C%85-grief-prevention-protection-gui-management-nations-wars-1-20-support.53313/),[BentoBox](https://github.com/BentoBoxWorld/BentoBox/), [SuperiorSkyblock2](https://github.com/BG-Software-LLC/SuperiorSkyblock2), [Iridium](https://github.com/Iridium-Development/IridiumSkyblock)
 
 ## Installation
 Download the JAR file from [latest release](https://github.com/alexanderdidio/CustomDecentHolograms/releases/latest) and copy it to the "plugins" directory for your Minecraft server.
