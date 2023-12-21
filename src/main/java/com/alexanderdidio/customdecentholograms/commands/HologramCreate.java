@@ -50,6 +50,22 @@ public class HologramCreate implements CommandExecutor {
             hologramAmount = database.countHolograms(uuid);
         }
 
+        if (plugin.getPermissionsEnabled()) {
+            int defaultAmount = plugin.getPermissionsDefault();
+            int maximumAmount = plugin.getPermissionsMaximum();
+            int permissionAmount = plugin.getPermissionsDefault();
+            for (int i = defaultAmount; i <= maximumAmount; i++) {
+                if (player.hasPermission("cdh.amount." + i)) {
+                    permissionAmount = i;
+                }
+            }
+            if (hologramAmount >= permissionAmount) {
+                message.send(sender, "senderMaximumHolograms");
+                message.send(player, "playerMaximumHolograms");
+                return true;
+            }
+        }
+
         if (hologramAmount > 0) {
             hologramName = "uuid_" + uuid + "_" + (hologramAmount + 1);
         } else {

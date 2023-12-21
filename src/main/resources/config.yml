@@ -1,20 +1,27 @@
 # CustomDecentHolograms v1.1 configuration file
 # Report bugs and issues at vanted.net/discord
 #
-# apis:
-# - GriefPrevention
-# - PlotSquared
-# - WorldGuard
-# - Towny
-# - Lands
-# - BentoBox
-# - SuperiorSkyblock
-# - IridiumSkyblock
-# region: Only needed if using WorldGuard as API option
-# max-lines: Limit the maximum lines a hologram can have
-# max-characters: Limit the maximum characters on each line
-# spawn-lines: Set the display for new holograms
-# spawn-location: Set the location for new holograms
+# hologram:
+#   apis:
+#     - GriefPrevention
+#     - GriefDefender
+#     - PlotSquared
+#     - WorldGuard
+#     - Towny
+#     - Lands
+#     - BentoBox
+#     - SuperiorSkyblock
+#     - IridiumSkyblock
+#   region: Only needed if using WorldGuard as API option
+#   max-lines: Limit the maximum lines a hologram can have
+#   max-characters: Limit the maximum characters on each line
+#   spawn-lines: Set the display for new holograms
+#   spawn-location: Set the location for new holograms
+#
+# permissions:
+#   enabled: Enable or disable permission limits
+#   default: The default amount a player is allowed
+#   maximum: The maximum amount a player can own
 
 hologram:
   api: ""
@@ -33,3 +40,8 @@ hologram:
     x: 0
     y: 0
     z: 0
+
+permissions:
+  enabled: false
+  default: 1
+  maximum: 100

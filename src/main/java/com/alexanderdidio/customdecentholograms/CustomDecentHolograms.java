@@ -18,6 +18,9 @@ public class CustomDecentHolograms extends JavaPlugin {
     private int maxLines;
     private int maxChars;
     private Location spawnLocation;
+    private boolean permissionsEnabled;
+    private int permissionsDefault;
+    private int permissionsMaximum;
     private List<String> spawnLines = new ArrayList<>();
 
     @Override
@@ -38,6 +41,9 @@ public class CustomDecentHolograms extends JavaPlugin {
         double z = getConfig().getDouble("hologram.spawn-location.Z");
         spawnLines = getConfig().getStringList("hologram.spawn-lines");
         spawnLocation = new Location(Bukkit.getWorld(world), x, y, z);
+        permissionsEnabled = getConfig().getBoolean("permissions.enabled");
+        permissionsDefault = getConfig().getInt("permissions.default");
+        permissionsMaximum = getConfig().getInt("permissions.maximum");
         Command command = new Command(this);
         PluginCommand pluginCommand = getCommand("hg");
         pluginCommand.setExecutor(command);
@@ -62,6 +68,18 @@ public class CustomDecentHolograms extends JavaPlugin {
 
     public String getRegionConfig() {
         return regionConfig;
+    }
+
+    public boolean getPermissionsEnabled() {
+        return permissionsEnabled;
+    }
+
+    public int getPermissionsDefault() {
+        return permissionsDefault;
+    }
+
+    public int getPermissionsMaximum() {
+        return permissionsMaximum;
     }
 
     public int getMaxLines() {
