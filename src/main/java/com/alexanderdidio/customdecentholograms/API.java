@@ -2,6 +2,8 @@ package com.alexanderdidio.customdecentholograms;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
+import com.griefdefender.api.Core;
+import com.griefdefender.api.GriefDefender;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
@@ -43,6 +45,8 @@ public class API {
         switch (plugin.getAPIConfig().toLowerCase()) {
             case "griefprevention":
                 return getGriefPrevention(player);
+            case "griefdefender":
+                return getGriefDefender(player);
             case "plotsquared":
                 return getPlotSquared(player);
             case "worldguard":
@@ -66,6 +70,7 @@ public class API {
         String apiConfig = plugin.getAPIConfig();
         List<String> apis = new ArrayList<>();
         apis.add("griefprevention");
+        apis.add("griefdefender");
         apis.add("plotsquared");
         apis.add("worldguard");
         apis.add("towny");
@@ -84,6 +89,20 @@ public class API {
     private boolean getGriefPrevention(Player player) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, false, null);
         return claim != null && claim.hasExplicitPermission(player, ClaimPermission.Build);
+    }
+
+    private boolean getGriefDefender(Player player) {
+        Location location = player.getLocation();
+        Core core = GriefDefender.getCore();
+        com.griefdefender.api.claim.Claim claim = core.getClaimAt(location);
+        com.griefdefender.api.User user = core.getUser(player.getUniqueId());
+        if (claim == null) {
+            return false;
+        }
+        if (user == null) {
+            return false;
+        }
+        return user.canBreak(location);
     }
 
     private boolean getPlotSquared(Player player) {
