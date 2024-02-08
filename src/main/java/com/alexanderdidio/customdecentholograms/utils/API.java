@@ -113,7 +113,11 @@ public class API {
         int y = location.getBlockY();
         int z = location.getBlockZ();
         Plot plot = Plot.getPlot(com.plotsquared.core.location.Location.at(world, x, y, z));
-        return plot != null && plot.getTrusted().contains(player.getUniqueId());
+        if (plot == null) { return false; }
+        boolean owners = plot.getOwners().contains(player.getUniqueId());
+        boolean trusted = plot.getTrusted().contains(player.getUniqueId());
+        boolean member = plot.getMembers().contains(player.getUniqueId());
+        return owners || trusted || member;
     }
 
     private boolean getWorldGuard(Player player) {
