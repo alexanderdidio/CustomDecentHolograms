@@ -1,6 +1,8 @@
 package com.alexanderdidio.customdecentholograms;
 
 import com.alexanderdidio.customdecentholograms.commands.Command;
+import com.alexanderdidio.customdecentholograms.events.*;
+import com.alexanderdidio.customdecentholograms.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.PluginCommand;
@@ -18,17 +20,32 @@ public class CustomDecentHolograms extends JavaPlugin {
     private int maxLines;
     private int maxChars;
     private Location spawnLocation;
-    private boolean permissionsEnabled;
-    private int permissionsDefault;
-    private int permissionsMaximum;
     private List<String> spawnLines = new ArrayList<>();
 
     @Override
     public void onEnable() {
+        loadConfigs();
+        Command command = new Command(this);
+        PluginCommand pluginCommand = getCommand("hg");
+        pluginCommand.setExecutor(command);
+        new Placeholders(this);
+        new Metrics(this, 18931);
+        new PlotSquaredEvents(this);
+        new GriefDefenderEvents(this);
+        Bukkit.getPluginManager().registerEvents(new LandsEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new BentoBoxEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new GriefPreventionEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new SuperiorSkyblockEvents(this), this);
+        Bukkit.getPluginManager().registerEvents(new IridiumSkyblockEvents(this), this);
+
+    }
+
+    public void loadConfigs() {
         database = new Database(this);
         message = new Message(this);
         api = new API(this);
         saveDefaultConfig();
+        reloadConfig();
         database.loadDatabase();
         message.loadMessages();
         apiConfig = getConfig().getString("hologram.api");
@@ -41,13 +58,6 @@ public class CustomDecentHolograms extends JavaPlugin {
         double z = getConfig().getDouble("hologram.spawn-location.Z");
         spawnLines = getConfig().getStringList("hologram.spawn-lines");
         spawnLocation = new Location(Bukkit.getWorld(world), x, y, z);
-        permissionsEnabled = getConfig().getBoolean("permissions.enabled");
-        permissionsDefault = getConfig().getInt("permissions.default");
-        permissionsMaximum = getConfig().getInt("permissions.maximum");
-        Command command = new Command(this);
-        PluginCommand pluginCommand = getCommand("hg");
-        pluginCommand.setExecutor(command);
-        new Metrics(this, 18931);
     }
 
     public Database getDatabase() {
@@ -68,18 +78,6 @@ public class CustomDecentHolograms extends JavaPlugin {
 
     public String getRegionConfig() {
         return regionConfig;
-    }
-
-    public boolean getPermissionsEnabled() {
-        return permissionsEnabled;
-    }
-
-    public int getPermissionsDefault() {
-        return permissionsDefault;
-    }
-
-    public int getPermissionsMaximum() {
-        return permissionsMaximum;
     }
 
     public int getMaxLines() {
