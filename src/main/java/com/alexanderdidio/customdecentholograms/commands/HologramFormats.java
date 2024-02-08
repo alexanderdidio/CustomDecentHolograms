@@ -1,7 +1,7 @@
 package com.alexanderdidio.customdecentholograms.commands;
 
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
-import com.alexanderdidio.customdecentholograms.Message;
+import com.alexanderdidio.customdecentholograms.utils.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

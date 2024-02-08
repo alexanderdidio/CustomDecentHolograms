@@ -1,8 +1,8 @@
 package com.alexanderdidio.customdecentholograms.commands;
 
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
-import com.alexanderdidio.customdecentholograms.Database;
-import com.alexanderdidio.customdecentholograms.Message;
+import com.alexanderdidio.customdecentholograms.utils.Database;
+import com.alexanderdidio.customdecentholograms.utils.Message;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
