@@ -34,7 +34,11 @@ public class HologramAdd implements CommandExecutor {
         StringBuilder strings = new StringBuilder();
 
         for (int i = 2; i < args.length; i++) {
-            strings.append(args[i]).append(" ");
+            if (i == args.length-1) {
+                strings.append(args[i]);
+            } else {
+                strings.append(args[i]).append(" ");
+            }
         }
 
         String hologramText = String.valueOf(strings);
