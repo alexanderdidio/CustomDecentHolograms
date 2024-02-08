@@ -25,29 +25,17 @@ public class CustomDecentHolograms extends JavaPlugin {
     @Override
     public void onEnable() {
         loadConfigs();
+        loadAPIs();
         Command command = new Command(this);
         PluginCommand pluginCommand = getCommand("hg");
         pluginCommand.setExecutor(command);
         new Placeholders(this);
         new Metrics(this, 18931);
-        new PlotSquaredEvents(this);
-        new GriefDefenderEvents(this);
-        Bukkit.getPluginManager().registerEvents(new LandsEvents(this), this);
-        Bukkit.getPluginManager().registerEvents(new BentoBoxEvents(this), this);
-        Bukkit.getPluginManager().registerEvents(new GriefPreventionEvents(this), this);
-        Bukkit.getPluginManager().registerEvents(new SuperiorSkyblockEvents(this), this);
-        Bukkit.getPluginManager().registerEvents(new IridiumSkyblockEvents(this), this);
-
     }
 
     public void loadConfigs() {
-        database = new Database(this);
-        message = new Message(this);
-        api = new API(this);
         saveDefaultConfig();
         reloadConfig();
-        database.loadDatabase();
-        message.loadMessages();
         apiConfig = getConfig().getString("hologram.api");
         regionConfig = getConfig().getString("hologram.region");
         maxLines = getConfig().getInt("hologram.max-lines");
@@ -58,6 +46,35 @@ public class CustomDecentHolograms extends JavaPlugin {
         double z = getConfig().getDouble("hologram.spawn-location.Z");
         spawnLines = getConfig().getStringList("hologram.spawn-lines");
         spawnLocation = new Location(Bukkit.getWorld(world), x, y, z);
+        database = new Database(this);
+        message = new Message(this);
+        api = new API(this);
+        message.loadMessages();
+        Bukkit.getScheduler().runTaskLater(this, () -> database.loadDatabase(),20);
+    }
+
+    private void loadAPIs() {
+        if (getServer().getPluginManager().isPluginEnabled("PlotSquared")) {
+            new PlotSquaredEvents(this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("GriefDefender")) {
+            new GriefDefenderEvents(this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("Lands")) {
+            Bukkit.getPluginManager().registerEvents(new LandsEvents(this), this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("BentoBox")) {
+            Bukkit.getPluginManager().registerEvents(new BentoBoxEvents(this), this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("GriefPrevention")) {
+            Bukkit.getPluginManager().registerEvents(new GriefPreventionEvents(this), this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock2")) {
+            Bukkit.getPluginManager().registerEvents(new SuperiorSkyblockEvents(this), this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("IridiumSkyblock")) {
+            Bukkit.getPluginManager().registerEvents(new IridiumSkyblockEvents(this), this);
+        }
     }
 
     public Database getDatabase() {
