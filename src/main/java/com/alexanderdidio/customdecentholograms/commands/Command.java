@@ -1,8 +1,8 @@
 package com.alexanderdidio.customdecentholograms.commands;
 
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
-import com.alexanderdidio.customdecentholograms.Database;
-import com.alexanderdidio.customdecentholograms.Message;
+import com.alexanderdidio.customdecentholograms.utils.Database;
+import com.alexanderdidio.customdecentholograms.utils.Message;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -21,13 +21,18 @@ public class Command implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         Message message = plugin.getMessage();
 
-        if (args.length == 0) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
             message.send(sender, "usageArgs");
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("reload")) {
+            HologramReload hologramReloadCommand = new HologramReload(plugin);
+            return hologramReloadCommand.onCommand(sender, command, label, args);
+        }
+
         if (args[0].equalsIgnoreCase("create")) {
-            if (args.length == 2) {
+            if (args.length <= 2) {
                 HologramCreate hologramCreateCommand = new HologramCreate(plugin);
                 return hologramCreateCommand.onCommand(sender, command, label, args);
             } else {
@@ -42,6 +47,16 @@ public class Command implements CommandExecutor, TabCompleter {
                 return hologramMoveCommand.onCommand(sender, command, label, args);
             } else {
                 message.send(sender, "usageMove");
+                return true;
+            }
+        }
+
+        if (args[0].equalsIgnoreCase("hide")) {
+            if (args.length == 2) {
+                HologramHide hologramHideCommand = new HologramHide(plugin);
+                return hologramHideCommand.onCommand(sender, command, label, args);
+            } else {
+                message.send(sender, "usageHide");
                 return true;
             }
         }
@@ -107,13 +122,16 @@ public class Command implements CommandExecutor, TabCompleter {
         UUID uuid;
 
         if (args.length == 1) {
+            tab.add("help");
             tab.add("create");
             tab.add("move");
+            tab.add("hide");
             tab.add("edit");
             tab.add("add");
             tab.add("remove");
             tab.add("list");
             tab.add("formats");
+            tab.add("reload");
         }
 
         if (args.length == 2 && cmd.equals("create")) {
@@ -130,7 +148,7 @@ public class Command implements CommandExecutor, TabCompleter {
             return tab;
         }
 
-        if (args.length == 2 && Arrays.asList("move", "edit", "add", "remove").contains(cmd)) {
+        if (args.length == 2 && Arrays.asList("move", "hide", "edit", "add", "remove").contains(cmd)) {
             player = (Player) sender;
             uuid = player.getUniqueId();
             for (int i = database.countHolograms(uuid); i > 0; i--) {
