@@ -18,10 +18,8 @@
 #   spawn-lines: Set the display for new holograms
 #   spawn-location: Set the location for new holograms
 #
-# permissions:
-#   enabled: Enable or disable permission limits
-#   default: The default amount a player is allowed
-#   maximum: The maximum amount a player can own
+# Assign cdh.amount.<number> permissions to groups and/or players
+# This will allow them to create x number of holograms themselves
 
 hologram:
   api: ""
@@ -40,8 +38,3 @@ hologram:
     x: 0
     y: 0
     z: 0
-
-permissions:
-  enabled: false
-  default: 1
-  maximum: 100
