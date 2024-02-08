@@ -40,3 +40,11 @@ commands:
         permission: cdh.formats
         description: List formatting options
         usage: /hg formats
+      reload:
+        permission: cdh.reload
+        description: Reload plugin
+        usage: /hg reload
+      hide:
+        permission: cdh.hide
+        description: Toggle hologram visibility
+        usage: /hg hide
