@@ -1,8 +1,8 @@
 package com.alexanderdidio.customdecentholograms.commands;
 
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
-import com.alexanderdidio.customdecentholograms.Database;
-import com.alexanderdidio.customdecentholograms.Message;
+import com.alexanderdidio.customdecentholograms.utils.Database;
+import com.alexanderdidio.customdecentholograms.utils.Message;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.DecentHologramsAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -32,7 +32,7 @@ public class HologramCreate implements CommandExecutor {
         List<String> lines = plugin.getLines();
         boolean permission = sender.hasPermission("cdh.create");
         boolean console = sender instanceof ConsoleCommandSender;
-        Player player = Bukkit.getPlayer(args[1]);
+        Player player;
         UUID uuid;
         int hologramAmount;
         String hologramName;
@@ -40,6 +40,19 @@ public class HologramCreate implements CommandExecutor {
         if (!(permission || console)) {
             message.send(sender, "noPermission");
             return true;
+        }
+
+        // Check if creating hologram for self or others
+
+        if (args.length == 1) {
+            player = (Player) sender;
+        } else {
+            if (!console && !sender.isOp()) {
+                message.send(sender, "noPermissionCreateOthers");
+                return true;
+            } else {
+                player = Bukkit.getPlayer(args[1]);
+            }
         }
 
         if (player == null) {
@@ -50,20 +63,22 @@ public class HologramCreate implements CommandExecutor {
             hologramAmount = database.countHolograms(uuid);
         }
 
-        if (plugin.getPermissionsEnabled()) {
-            int defaultAmount = plugin.getPermissionsDefault();
-            int maximumAmount = plugin.getPermissionsMaximum();
-            int permissionAmount = plugin.getPermissionsDefault();
-            for (int i = defaultAmount; i <= maximumAmount; i++) {
-                if (player.hasPermission("cdh.amount." + i)) {
-                    permissionAmount = i;
-                }
+        // Check permission for allowed number of holograms
+        int permissionAmount = 0;
+
+        for (int i = 1; i <= 200; i++) {
+            if (player.hasPermission("cdh.amount." + i)) {
+                permissionAmount = i;
             }
-            if (hologramAmount >= permissionAmount) {
+        }
+
+        if (hologramAmount >= permissionAmount) {
+            if (args.length == 1) {
+                message.send(sender, "playerMaximumHolograms");
+            } else {
                 message.send(sender, "senderMaximumHolograms");
-                message.send(player, "playerMaximumHolograms");
-                return true;
             }
+            return true;
         }
 
         if (hologramAmount > 0) {
@@ -82,8 +97,10 @@ public class HologramCreate implements CommandExecutor {
             throw new RuntimeException(e);
         }
 
-        message.send(sender, "hologramCreate", args[1]);
-        message.send(player, "hologramReceive");
+        if (args.length != 1) {
+            message.send(player, "hologramCreateSender", args[1]);
+        }
+        message.send(player, "hologramCreatePlayer");
         return true;
     }
 }
