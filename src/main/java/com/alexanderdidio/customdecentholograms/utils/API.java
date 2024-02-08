@@ -1,5 +1,6 @@
-package com.alexanderdidio.customdecentholograms;
+package com.alexanderdidio.customdecentholograms.utils;
 
+import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.griefdefender.api.Core;

@@ -1,5 +1,6 @@
-package com.alexanderdidio.customdecentholograms;
+package com.alexanderdidio.customdecentholograms.utils;
 
+import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.configuration.file.YamlConfiguration;

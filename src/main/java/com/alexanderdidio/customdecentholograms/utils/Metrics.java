@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package com.alexanderdidio.customdecentholograms;
+package com.alexanderdidio.customdecentholograms.utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

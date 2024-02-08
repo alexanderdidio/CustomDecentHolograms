@@ -1,11 +1,15 @@
-package com.alexanderdidio.customdecentholograms;
+package com.alexanderdidio.customdecentholograms.utils;
 
+import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
+import java.util.UUID;
 
 public class Message {
     private final CustomDecentHolograms plugin;
@@ -30,8 +34,31 @@ public class Message {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', format(message)));
     }
 
+    public void send(UUID uuid, String message) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) {
+            return;
+        }
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', format(message)));
+    }
+
     private String format(String message) {
-        return messageConfig.getString("prefix") + messageConfig.getString(message);
+        if (messageConfig.isList(message)) {
+            List<String> lines = messageConfig.getStringList(message);
+            StringBuilder stringBuilder = new StringBuilder();
+            int i = 1;
+            for (String line : lines) {
+                if (i < lines.size()) {
+                    stringBuilder.append(line);
+                    stringBuilder.append("\n");
+                } else {
+                    stringBuilder.append(line);
+                }
+            }
+            return stringBuilder.toString();
+        } else {
+            return messageConfig.getString("prefix") + messageConfig.getString(message);
+        }
     }
 
     public void loadMessages() {
