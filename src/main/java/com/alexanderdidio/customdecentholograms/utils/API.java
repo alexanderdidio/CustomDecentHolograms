@@ -5,9 +5,12 @@ import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.griefdefender.api.Core;
 import com.griefdefender.api.GriefDefender;
-import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumteams.PermissionType;
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyPermission;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import com.plotsquared.core.plot.Plot;
@@ -67,6 +70,35 @@ public class API {
         }
     }
 
+    public boolean checkIsOwner(Player player) {
+        if (plugin.getConfig().getBoolean("settings.onlyOwnerCanSpawn")) {
+            switch (plugin.getAPIConfig().toLowerCase()) {
+                case "griefprevention":
+                    return getGriefPreventionOwner(player);
+                case "griefdefender":
+                    return getGriefDefenderOwner(player);
+                case "plotsquared":
+                    return getPlotSquaredOwner(player);
+                case "worldguard":
+                    return getWorldGuardOwner(player);
+                case "towny":
+                    return getTownyOwner(player);
+                case "lands":
+                    return getLandsOwner(player);
+                case "bentobox":
+                    return getBentoBoxOwner(player);
+                case "superiorskyblock":
+                    return getSuperiorSkyblockOwner(player);
+                case "iridiumskyblock":
+                    return getIridiumOwner(player);
+                default:
+                    return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
     public boolean validateAPI() {
         String apiConfig = plugin.getAPIConfig();
         List<String> apis = new ArrayList<>();
@@ -92,6 +124,11 @@ public class API {
         return claim != null && claim.hasExplicitPermission(player, ClaimPermission.Build);
     }
 
+    private boolean getGriefPreventionOwner(Player player) {
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, false, null);
+        return claim != null && claim.hasExplicitPermission(player, ClaimPermission.Manage);
+    }
+
     private boolean getGriefDefender(Player player) {
         Location location = player.getLocation();
         Core core = GriefDefender.getCore();
@@ -104,6 +141,19 @@ public class API {
             return false;
         }
         return user.canBreak(location);
+    }
+
+    private boolean getGriefDefenderOwner(Player player) {
+        Location location = player.getLocation();
+        Core core = GriefDefender.getCore();
+        com.griefdefender.api.claim.Claim claim = core.getClaimAt(location);
+        if (claim == null) {
+            return false;
+        }
+        if (claim.getOwnerUniqueId() == null) {
+            return false;
+        }
+        return claim.getOwnerUniqueId() == player.getUniqueId();
     }
 
     private boolean getPlotSquared(Player player) {
@@ -120,7 +170,40 @@ public class API {
         return owners || trusted || member;
     }
 
+    private boolean getPlotSquaredOwner(Player player) {
+        Location location = player.getLocation();
+        String world = location.getWorld().getName();
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+        Plot plot = Plot.getPlot(com.plotsquared.core.location.Location.at(world, x, y, z));
+        if (plot == null) { return false; }
+        boolean owners = plot.getOwners().contains(player.getUniqueId());
+        return owners;
+    }
+
     private boolean getWorldGuard(Player player) {
+        int x = (int) player.getLocation().getX();
+        int y = (int) player.getLocation().getY();
+        int z = (int) player.getLocation().getZ();
+        String region = plugin.getRegionConfig();
+        World world = BukkitAdapter.adapt(player.getWorld());
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(world);
+        if (regions == null) {
+            return false;
+        }
+        if (!regions.hasRegion(region)) {
+            return false;
+        }
+        ProtectedRegion protectedRegion = regions.getRegion(region);
+        if (protectedRegion == null) {
+            return false;
+        }
+        return protectedRegion.contains(x, y, z);
+    }
+
+    private boolean getWorldGuardOwner(Player player) {
         int x = (int) player.getLocation().getX();
         int y = (int) player.getLocation().getY();
         int z = (int) player.getLocation().getZ();
@@ -146,6 +229,12 @@ public class API {
         return PlayerCacheUtil.getCachePermission(player, location, Material.ARMOR_STAND, TownyPermission.ActionType.BUILD);
     }
 
+    private boolean getTownyOwner(Player player) {
+        Location location = player.getLocation();
+        Town town = TownyAPI.getInstance().getTown(player.getLocation());
+        return town != null && town.hasResident(player.getName()) && town.isMayor(TownyAPI.getInstance().getResident(player));
+    }
+
     private boolean getLands(Player player) {
         UUID uuid = player.getUniqueId();
         Location location = player.getLocation();
@@ -157,10 +246,27 @@ public class API {
         return false;
     }
 
+    private boolean getLandsOwner(Player player) {
+        UUID uuid = player.getUniqueId();
+        Location location = player.getLocation();
+        LandsIntegration api = LandsIntegration.of(plugin);
+        Area area = api.getArea(location);
+        if (area != null) {
+            return area.getOwnerUID() == player.getUniqueId();
+        }
+        return false;
+    }
+
     private boolean getBentoBox(Player player) {
         IslandsManager manager = BentoBox.getInstance().getIslandsManager();
         Optional<world.bentobox.bentobox.database.objects.Island> island = manager.getIslandAt(player.getLocation());
         return island.isPresent() && island.get().isAllowed(User.getInstance(player), Flags.PLACE_BLOCKS);
+    }
+
+    private boolean getBentoBoxOwner(Player player) {
+        IslandsManager manager = BentoBox.getInstance().getIslandsManager();
+        Optional<world.bentobox.bentobox.database.objects.Island> island = manager.getIslandAt(player.getLocation());
+        return island.get().isOwned() && island.get().getOwner() == player.getUniqueId();
     }
 
     private boolean getSuperiorSkyblock(Player player) {
@@ -170,9 +276,23 @@ public class API {
         return island != null && (island.isMember(superiorPlayer) || island.isCoop(superiorPlayer));
     }
 
+    private boolean getSuperiorSkyblockOwner(Player player) {
+        Location location = player.getLocation();
+        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+        com.bgsoftware.superiorskyblock.api.island.Island island = SuperiorSkyblockAPI.getIslandAt(location);
+        return island != null && (island.isMember(superiorPlayer) || island.isCoop(superiorPlayer)) && island.getOwner().equals(superiorPlayer);
+    }
+
     private boolean getIridium(Player player) {
         Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
         com.iridium.iridiumskyblock.database.User user = IridiumSkyblockAPI.getInstance().getUser(player);
         return island.isPresent() && IridiumSkyblockAPI.getInstance().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK);
     }
+
+    private boolean getIridiumOwner(Player player) {
+        Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
+        com.iridium.iridiumskyblock.database.User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        return island.isPresent() && IridiumSkyblockAPI.getInstance().getIslandPermission(island.get(), user, PermissionType.DEMOTE);
+    }
+
 }

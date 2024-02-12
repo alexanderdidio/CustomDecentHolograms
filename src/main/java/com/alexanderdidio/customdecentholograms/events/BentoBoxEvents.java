@@ -3,15 +3,12 @@ package com.alexanderdidio.customdecentholograms.events;
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
-import me.angeschossen.lands.api.land.Area;
-import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import world.bentobox.bentobox.api.events.island.IslandDeletedEvent;
+import world.bentobox.bentobox.api.events.island.IslandDeleteEvent;
 import world.bentobox.bentobox.api.events.team.TeamKickEvent;
 import world.bentobox.bentobox.api.events.team.TeamLeaveEvent;
-import world.bentobox.bentobox.database.objects.IslandDeletion;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +21,7 @@ public class BentoBoxEvents implements Listener {
     }
 
     @EventHandler
-    public void onIslandDelete(IslandDeletedEvent event) {
+    public void onIslandDelete(IslandDeleteEvent event) {
         UUID uuid = event.getPlayerUUID();
         List<Hologram> holograms = plugin.getDatabase().listHolograms(uuid);
         if (holograms.size() > 0) {

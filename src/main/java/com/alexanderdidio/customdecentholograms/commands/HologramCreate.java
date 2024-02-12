@@ -1,6 +1,7 @@
 package com.alexanderdidio.customdecentholograms.commands;
 
 import com.alexanderdidio.customdecentholograms.CustomDecentHolograms;
+import com.alexanderdidio.customdecentholograms.utils.API;
 import com.alexanderdidio.customdecentholograms.utils.Database;
 import com.alexanderdidio.customdecentholograms.utils.Message;
 import eu.decentsoftware.holograms.api.DHAPI;
@@ -30,6 +31,7 @@ public class HologramCreate implements CommandExecutor {
         Database database = plugin.getDatabase();
         Message message = plugin.getMessage();
         List<String> lines = plugin.getLines();
+        API api = plugin.getAPI();
         boolean permission = sender.hasPermission("cdh.create");
         boolean console = sender instanceof ConsoleCommandSender;
         Player player;
@@ -61,6 +63,16 @@ public class HologramCreate implements CommandExecutor {
         } else {
             uuid = player.getUniqueId();
             hologramAmount = database.countHolograms(uuid);
+        }
+
+        if (!api.validateAPI()) {
+            message.send(sender, "invalidAPI");
+            return true;
+        }
+
+        if (!api.checkIsOwner(player)) {
+            message.send(sender, "noPermissionCreateHere");
+            return true;
         }
 
         // Check permission for allowed number of holograms
