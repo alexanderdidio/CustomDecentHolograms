@@ -96,8 +96,8 @@
         <dependencies>
             <dependency>
                 <groupId>com.intellectualsites.bom</groupId>
-                <artifactId>bom-1.18.x</artifactId>
-                <version>1.28</version>
+                <artifactId>bom-newest</artifactId>
+                <version>1.41</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.2.8</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>com.bgsoftware</groupId>
@@ -151,8 +151,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared-Core</artifactId>
+            <groupId>com.intellectualsites.plotsquared</groupId>
+            <artifactId>plotsquared-core</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -178,6 +178,11 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.5</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.0.0-jre</version>
         </dependency>
     </dependencies>
 </project>

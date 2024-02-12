@@ -38,3 +38,6 @@ hologram:
     x: 0
     y: 0
     z: 0
+settings:
+  # Determine, if only the owner of the plot, island... can create a hologram on it
+  onlyOwnerCanSpawn: false

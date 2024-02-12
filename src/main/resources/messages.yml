@@ -1,6 +1,7 @@
 prefix: "&x&4&9&B&E&E&8&lHolograms &8&l» &7"
 noPermission: "&cYou do not have permission for this command."
 noPermissionCreateOthers: "&cYou do not have permission to create holograms for other players. Please use just the command '&a/hg create' &cinstead."
+noPermissionCreateHere: "&cYou do not have permission to create holograms here. Create it in your own area instead."
 invalidAPI: "&cPlease notify the server owner to correctly configure an API in the plugin's config.yml."
 invalidSender: "&cAn issue occurred performing this command."
 invalidPlayer: "&cThe player you entered is not online."
